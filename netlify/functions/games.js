@@ -1,6 +1,13 @@
 export const handler = async (event) => {
   try {
-    const response = await fetch('https://www.freetogame.com/api/games');
+    const category = event.queryStringParameters?.category;
+    const url = new URL('https://www.freetogame.com/api/games');
+
+    if (category) {
+      url.searchParams.set('category', category);
+    }
+
+    const response = await fetch(url);
 
     if (!response.ok) {
       return {
@@ -19,7 +26,7 @@ export const handler = async (event) => {
       },
       body: JSON.stringify(data),
     };
-  } catch (error) {
+  } catch {
     return {
       statusCode: 500,
       body: JSON.stringify({ error: 'Error interno del servidor' }),

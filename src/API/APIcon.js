@@ -1,19 +1,50 @@
 import axios from 'axios';
 
-export const fetchData = async () => {
-  // En producción con Netlify usamos la función serverless. En desarrollo usamos la URL directa o la variable de entorno.
-  const apiUrl = import.meta.env.DEV
-    ? (import.meta.env.VITE_API_URL || 'https://www.freetogame.com/api/games')
-    : '/.netlify/functions/games';
+// La URL base apunta al servidor Express local definido en las variables de entorno
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4001';
 
-  const response = await axios.get(apiUrl);
+export const normalizeGame = (game) => ({
+  ...game,
+  id: game.gameId ?? game.id ?? game._id,
+  _id: game._id ?? game.id,
+});
 
-  if (Array.isArray(response.data)) {
-    // Retornamos todos los juegos para que la búsqueda global funcione. 
-    // La paginación o límite de vista se manejará en el componente Content.
-    return response.data;
-  } else {
-    throw new Error('La API no devolvió datos válidos.');
+export const fetchData = async ({ category, search } = {}) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/api/games`, {
+      params: { ...(category && { category }), ...(search && { search }) },
+    });
+
+    if (Array.isArray(response.data)) {
+      return response.data.map(normalizeGame);
+    } else {
+      throw new Error('La API no devolvió datos válidos.');
+    }
+  } catch (error) {
+    console.error('Error al obtener los datos de la API:', error);
+    return [];
   }
 };
 
+export const syncGamesAPI = async () => {
+  const response = await axios.post(`${BASE_URL}/api/sync`);
+  return response.data;
+};
+
+export const addGameAPI = async (gameData) => {
+  const response = await axios.post(`${BASE_URL}/api/games`, gameData);
+  return normalizeGame(response.data);
+};
+
+export const updateGameAPI = async (id, gameData) => {
+  const response = await axios.put(`${BASE_URL}/api/games/${id}`, gameData);
+  return normalizeGame(response.data);
+};
+
+export const deleteGameAPI = async (id) => {
+  const response = await axios.delete(`${BASE_URL}/api/games/${id}`);
+  return response.data;
+};
+
+
+// Este APIcon corre en el navegador y se comunica con el backend, hace los get, post, put y delete

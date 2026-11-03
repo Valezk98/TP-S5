@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from 'react';
 import useCarrito from '../hooks/useCarrito';
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const CarritoContext = createContext();
 
 export const CarritoProvider = ({ children }) => {
@@ -14,14 +15,14 @@ export const CarritoProvider = ({ children }) => {
 
   return (
     <CarritoContext.Provider
-      value={{...carritoMethods, checkoutItem, setCheckoutItem, isCartOpen, setIsCartOpen,}}
->
+      value={{ ...carritoMethods, checkoutItem, setCheckoutItem, isCartOpen, setIsCartOpen }}
+    >
       {children}
     </CarritoContext.Provider>
   );
 };
 
-
+// eslint-disable-next-line react-refresh/only-export-components
 export const useCarritoContext = () => {
   const context = useContext(CarritoContext);
   if (!context) {

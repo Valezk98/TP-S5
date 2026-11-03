@@ -4,13 +4,16 @@ import './index.css'
 import App from './App.jsx'
 import { GamesProvider } from './context/GamesContext.jsx'
 import { CarritoProvider } from './context/CarritoContext.jsx'
+import { BrowserRouter } from 'react-router-dom'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <GamesProvider>
-      <CarritoProvider>
-        <App />
-      </CarritoProvider>
-    </GamesProvider>
+    <BrowserRouter>
+      <GamesProvider>
+        <CarritoProvider>
+          <App />
+        </CarritoProvider>
+      </GamesProvider>
+    </BrowserRouter>
   </StrictMode>,
 )
