@@ -4,7 +4,6 @@ import { filtrarJuegos } from '../../../utils/filtros';
 import Card from './Card';
 import Filtros from './utils/Filtros';
 import Paginacion from './utils/Paginacion';
-import GameModalForm from './GameModalForm';
 
 const ITEMS_POR_PAGINA = 12;
 
@@ -19,13 +18,10 @@ export default function Content() {
     activeSearchQuery, setActiveSearchQuery,
     filtroOrden, favoritos,
     sincronizar, isSyncing,
-    agregarJuego, actualizarJuego,
   } = useContext(GamesContext);
 
   const [showGames, setShowGames] = useState(true);
   const [page, setPage] = useState(getPageFromURL);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [gameToEdit, setGameToEdit] = useState(null);
   const [syncStatus, setSyncStatus] = useState({ message: '', type: '' });
 
   // Navegación atrás/adelante
@@ -108,11 +104,6 @@ export default function Content() {
               {isSyncing ? 'Sincronizando...' : 'Sincronizar API'}
             </button>
 
-            {/* Botón Nuevo Juego */}
-            <button type="button" onClick={() => { setGameToEdit(null); setIsModalOpen(true); }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface border border-outline-variant/50 hover:border-primary/50 text-xs font-bold transition-all active:scale-95 cursor-pointer">
-              ➕ Nuevo Juego
-            </button>
           </div>
 
           <p className="text-on-surface-variant font-body-md mt-sm">
@@ -165,7 +156,7 @@ export default function Content() {
             )}
 
             {!loading && !error && displayedGames.map((game) => (
-              <Card key={game._id || game.id} game={game} onEdit={(g) => { setGameToEdit(g); setIsModalOpen(true); }} />
+              <Card key={game._id || game.id} game={game} />
             ))}
           </div>
 
@@ -174,19 +165,6 @@ export default function Content() {
           )}
         </>
       )}
-
-      <GameModalForm
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        gameToEdit={gameToEdit}
-        onSubmitGame={async (data) => {
-          if (gameToEdit) {
-            await actualizarJuego(gameToEdit._id || gameToEdit.id || gameToEdit.gameId, data);
-          } else {
-            await agregarJuego(data);
-          }
-        }}
-      />
     </main>
   );
 }

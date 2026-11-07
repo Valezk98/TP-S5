@@ -47,4 +47,4 @@ export const deleteGameAPI = async (id) => {
 };
 
 
-// Este APIcon corre en el navegador y se comunica con el backend, hace los get, post, put y delete
+// Este APIcon corre en el navegador y se comunica con el backend, pide los get, post, put y delete

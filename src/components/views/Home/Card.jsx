@@ -4,26 +4,12 @@ import { GamesContext } from "../../../context/GamesContext";
 import { formatearPrecio } from "../../../utils/formato";
 import { STORE_ENABLED } from "../../../config/features";
 
-export default function Card({ game, onEdit }) {
+export default function Card({ game }) {
   const { setCheckoutItem, isInCart } = useCarritoContext();
-  const { isFavorito, toggleFavorito, eliminarJuego } = useContext(GamesContext);
+  const { isFavorito, toggleFavorito } = useContext(GamesContext);
 
   const yaEnCarrito = STORE_ENABLED && isInCart(game.id);
   const esFav = isFavorito(game.id);
-
-  const handleDelete = (e) => {
-    e.stopPropagation();
-    if (window.confirm(`¿Seguro que deseas eliminar "${game.title}"?`)) {
-      eliminarJuego(game._id || game.id || game.gameId);
-    }
-  };
-
-  const handleEdit = (e) => {
-    e.stopPropagation();
-    if (onEdit) {
-      onEdit(game);
-    }
-  };
 
   return (
     <article
@@ -116,9 +102,9 @@ export default function Card({ game, onEdit }) {
           </div>
         )}
 
-        {/* Acciones CRUD si la tienda está en modo catálogo (bypass) */}
+        {/* Enlace al juego en modo catálogo (bypass) */}
         {!STORE_ENABLED && (
-          <div className="mt-auto pt-3 border-t border-outline-variant/30 flex items-center justify-between gap-2">
+          <div className="mt-auto pt-3 border-t border-outline-variant/30 flex items-center justify-end">
             <a
               href={game.game_url}
               target="_blank"
@@ -128,26 +114,6 @@ export default function Card({ game, onEdit }) {
             >
               Jugar ↗
             </a>
-
-            <div className="flex items-center gap-1.5">
-              <button
-                type="button"
-                onClick={handleEdit}
-                title="Editar juego"
-                className="text-xs px-2.5 py-1 rounded bg-surface hover:bg-surface-bright text-on-surface border border-outline-variant/40 hover:border-primary/50 transition-colors cursor-pointer"
-              >
-                Editar
-              </button>
-
-              <button
-                type="button"
-                onClick={handleDelete}
-                title="Eliminar juego"
-                className="text-xs px-2.5 py-1 rounded bg-error-container/20 hover:bg-error-container/40 text-error border border-error/30 transition-colors cursor-pointer"
-              >
-                Eliminar
-              </button>
-            </div>
           </div>
         )}
       </div>

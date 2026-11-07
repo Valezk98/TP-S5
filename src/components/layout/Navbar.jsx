@@ -31,6 +31,17 @@ export default function Navbar() {
           About
         </NavLink>
 
+        <NavLink
+          to="/admin"
+          className={({ isActive }) =>
+            `hidden sm:inline font-semibold text-sm transition-colors shrink-0 ${
+              isActive ? "text-primary" : "text-on-surface-variant hover:text-primary"
+            }`
+          }
+        >
+          Admin
+        </NavLink>
+
         <div className="hidden md:flex gap-lg items-center w-full">
           <SearchBar />
         </div>

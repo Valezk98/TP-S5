@@ -1,13 +1,6 @@
-import mongoose from 'mongoose';
 import Game from '../model/gameModel.mjs';
 
-const buildFilter = (id) => {
-  if (mongoose.Types.ObjectId.isValid(id) && String(new mongoose.Types.ObjectId(id)) === String(id)) {
-    return { _id: id, type: 'game' };
-  }
-  const num = Number(id);
-  return !isNaN(num) ? { gameId: num, type: 'game' } : { _id: id, type: 'game' };
-};
+const buildFilter = (id) => ({ _id: id, type: 'game' });
 
 class GamesRepository {
   async getAllGames({ category, search } = {}) {

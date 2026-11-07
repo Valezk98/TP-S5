@@ -100,6 +100,7 @@ export const GamesProvider = ({ children }) => {
 
   const agregarJuego = async (data) => {
     const nuevo = await addGameAPI(data);
+    setError(null);
     setCatalogo((prev) => [nuevo, ...prev]);
     return nuevo;
   };
@@ -123,6 +124,7 @@ export const GamesProvider = ({ children }) => {
     <GamesContext.Provider
       value={{
         games, loading, error,
+        catalogo, loadingCatalogo,
         activeSearch, setActiveSearch,
         activeSearchQuery: activeSearch, setActiveSearchQuery: setActiveSearch,
         filtroOrden, setFiltroOrden,
