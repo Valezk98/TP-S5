@@ -48,7 +48,7 @@ export const GamesProvider = ({ children }) => {
     const data = await fetchData();
     if (data.length === 0) {
       setCatalogo([]);
-      setError('No hay juegos en la base de datos. Haz clic en "Sincronizar API" para importar el catálogo.');
+      setError('No hay juegos en la base de datos. Sincronizá el catálogo desde el Panel de Administración.');
     } else {
       setCatalogo(agregarDatosTienda(data));
     }

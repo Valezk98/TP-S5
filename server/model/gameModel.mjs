@@ -64,5 +64,5 @@ const gameSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model('Game', gameSchema, 'Grupo-29');
+export default mongoose.model('Game', gameSchema, 'juegos');
 

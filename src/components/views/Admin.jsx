@@ -18,11 +18,14 @@ export default function Admin() {
     agregarJuego,
     actualizarJuego,
     eliminarJuego,
+    sincronizar,
+    isSyncing,
   } = useContext(GamesContext);
 
   const [page, setPage] = useState(getPageFromURL);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [gameToEdit, setGameToEdit] = useState(null);
+  const [syncStatus, setSyncStatus] = useState({ message: '', type: '' });
 
   useEffect(() => {
     const onPop = () => setPage(getPageFromURL());
@@ -69,11 +72,34 @@ export default function Admin() {
     }
   };
 
+  const handleSync = async () => {
+    setSyncStatus({ message: 'Sincronizando con FreeToGame...', type: 'info' });
+    try {
+      const res = await sincronizar();
+      setSyncStatus({ message: `Sincronización completada. (${res?.result?.upsertedCount ?? 0} nuevos)`, type: 'success' });
+      setTimeout(() => setSyncStatus({ message: '', type: '' }), 4000);
+    } catch (err) {
+      setSyncStatus({ message: 'Error: ' + (err.response?.data?.error || err.message), type: 'error' });
+      setTimeout(() => setSyncStatus({ message: '', type: '' }), 5000);
+    }
+  };
+
   return (
     <main
       id="admin"
       className="w-full max-w-360 mx-auto px-margin-mobile md:px-margin-desktop pt-28 pb-xl min-h-[80vh]"
     >
+      {syncStatus.message && (
+        <div className={`mb-lg p-4 rounded-xl border text-sm font-medium flex items-center justify-between ${
+          syncStatus.type === 'error' ? 'bg-error-container/20 text-error border-error/40'
+          : syncStatus.type === 'success' ? 'bg-emerald-950/40 text-emerald-300 border-emerald-500/40'
+          : 'bg-primary-container/20 text-primary border-primary/40'
+        }`}>
+          <span>{syncStatus.message}</span>
+          <button type="button" onClick={() => setSyncStatus({ message: '', type: '' })} className="ml-4 opacity-75 hover:opacity-100 cursor-pointer">✕</button>
+        </div>
+      )}
+
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-lg">
         <div>
           <h1 className="font-headline-md text-headline-md font-bold text-primary mb-1">
@@ -84,13 +110,27 @@ export default function Admin() {
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={abrirCrear}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface border border-outline-variant/50 hover:border-primary/50 text-xs font-bold transition-all active:scale-95 cursor-pointer"
-        >
-          Nuevo Juego
-        </button>
+        <div className="flex items-center gap-2 flex-wrap">
+          <button
+            type="button"
+            onClick={handleSync}
+            disabled={isSyncing}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary border border-primary/30 text-xs font-bold transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+          >
+            <svg className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            {isSyncing ? 'Sincronizando...' : 'Sincronizar API'}
+          </button>
+
+          <button
+            type="button"
+            onClick={abrirCrear}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface border border-outline-variant/50 hover:border-primary/50 text-xs font-bold transition-all active:scale-95 cursor-pointer"
+          >
+            Nuevo Juego
+          </button>
+        </div>
       </div>
 
       {loadingCatalogo ? (

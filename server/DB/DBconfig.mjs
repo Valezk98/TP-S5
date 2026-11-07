@@ -1,3 +1,7 @@
+import { setServers } from 'node:dns/promises';
+
+setServers(['1.1.1.1', '8.8.8.8']);
+
 import mongoose from 'mongoose';
 
 export const connectDB = async () => {
@@ -8,7 +12,7 @@ export const connectDB = async () => {
     }
 
     await mongoose.connect(uri);
-    console.log('MongoDB conectado exitosamente a la colección Grupo-29');
+    console.log('MongoDB conectado exitosamente');
   } catch (error) {
     console.error('Falló la conexión a la base de datos:', error.message);
     process.exit(1);
