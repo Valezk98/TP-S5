@@ -96,7 +96,7 @@ export const GamesProvider = ({ children }) => {
     finally { setIsSyncing(false); }
   };
 
-  const matchId = (g, id) => g.id === id || g._id === id || g.gameId === id;
+  const matchId = (game, id) => game.id === id || game._id === id || game.gameId === id;
 
   const agregarJuego = async (data) => {
     const nuevo = await addGameAPI(data);

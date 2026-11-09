@@ -18,7 +18,7 @@ If you are developing a production application, we recommend using TypeScript wi
 
 ## Sobre el sitio y URL
 
-GLITCH es un proyecto que simula una tienda de videojuegos, en su versión temprana solo era una SPA que mostraba unos cuantos juegos en un panel, sin interacción, en esta versión se añadieron algunas funcionalidades, como la que permite añadirlos a un carrito, filtrarlos por precio y antigüedad y añadirlos a favoritos. 
+GLITCH CORE es un proyecto que simula una tienda de videojuegos, en su versión temprana solo era una SPA que mostraba unos cuantos juegos en un panel, sin interacción, en esta versión se añadieron algunas funcionalidades, como la que permite añadirlos a un carrito, filtrarlos por precio y antigüedad y añadirlos a favoritos. 
 
 https://glitchgamestore.netlify.app/
 
@@ -28,7 +28,7 @@ Link de la documentación https://www.freetogame.com/api-doc
 
 ## Como correrlo en local
 
-npm run dev
+npm run dev & npm run server
 
 ## Decisiones
 
