@@ -25,9 +25,9 @@ export default function Home() {
       <FeatureSection />
       <Content />
       <Plataformas />
-      <StatsBar />
+      {/* <StatsBar />
       <Reseñas />
-      <Newsletter />
+      <Newsletter /> */}
     </>
   )
 }
