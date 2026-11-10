@@ -23,6 +23,7 @@ export default function Admin() {
   } = useContext(GamesContext);
 
   const [page, setPage] = useState(getPageFromURL);
+  const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [gameToEdit, setGameToEdit] = useState(null);
   const [syncStatus, setSyncStatus] = useState({ message: '', type: '' });
@@ -33,11 +34,17 @@ export default function Admin() {
     return () => window.removeEventListener('popstate', onPop);
   }, []);
 
-  const totalPaginas = Math.max(1, Math.ceil(catalogo.length / ITEMS_POR_PAGINA));
+  // buscador en admin
+  const searchTerm = search.trim().toLowerCase();
+  const filteredGames = searchTerm
+    ? catalogo.filter((game) => String(game.title || '').toLowerCase().includes(searchTerm))
+    : catalogo;
+
+  const totalPaginas = Math.max(1, Math.ceil(filteredGames.length / ITEMS_POR_PAGINA));
   const paginaActual = loadingCatalogo ? page : Math.min(Math.max(1, page), totalPaginas);
 
   const indiceInicio = (paginaActual - 1) * ITEMS_POR_PAGINA;
-  const displayedGames = catalogo.slice(indiceInicio, indiceInicio + ITEMS_POR_PAGINA);
+  const displayedGames = filteredGames.slice(indiceInicio, indiceInicio + ITEMS_POR_PAGINA);
 
   const cambiarPagina = (nuevaPagina) => {
     const p = Math.max(1, Math.min(nuevaPagina, totalPaginas));
@@ -111,6 +118,15 @@ export default function Admin() {
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
+          <input
+            type="search"
+            value={search}
+            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+            placeholder="Buscar por título..."
+            aria-label="Buscar juegos por título"
+            className="w-48 px-3 py-1.5 rounded-lg bg-surface-container-high border border-outline-variant/50 text-on-surface placeholder-on-surface-variant/60 focus:outline-none focus:border-primary text-xs transition-colors"
+          />
+
           <button
             type="button"
             onClick={handleSync}
@@ -147,7 +163,7 @@ export default function Admin() {
       ) : displayedGames.length === 0 ? (
         <div className="text-center py-xl">
           <p className="text-on-surface-variant font-bold text-lg">
-            No hay juegos en el catálogo.
+            {searchTerm ? 'No hay juegos que coincidan con la búsqueda.' : 'No hay juegos en el catálogo.'}
           </p>
         </div>
       ) : (
