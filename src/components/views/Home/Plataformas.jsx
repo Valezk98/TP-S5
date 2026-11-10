@@ -1,5 +1,5 @@
 const plataformas = [
-  { name: "PC", icon: "🖥" },
+  { name: "PC", icon: "🖥️" },
   { name: "PlayStation", icon: "🎮" },
   { name: "Xbox", icon: "🟢" },
   { name: "Nintendo", icon: "🔴" },

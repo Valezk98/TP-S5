@@ -8,8 +8,7 @@ export default function About() {
         About
       </h1>
       <p className="text-on-surface-variant font-body-md max-w-2xl">
-        GLITCH_CORE es una tienda de videojuegos. Esta vista existe para probar
-        la navegación con React Router
+        GLITCH_CORE es una catálogo de videojuegos que ofrece una amplia variedad de títulos para diferentes plataformas. Nuestro objetivo es proporcionar a los jugadores una experiencia única y emocionante al explorar el mundo de los videojuegos. Desde los clásicos hasta los lanzamientos más recientes, GLITCH_CORE tiene algo para todos los gustos.
 
         <Link to="/" className="text-primary font-bold ml-1">
           Volver al inicio
