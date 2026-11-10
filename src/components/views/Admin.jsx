@@ -68,14 +68,17 @@ export default function Admin() {
   const handleEliminar = async (game) => {
     if (window.confirm(`¿Seguro que deseas eliminar "${game.title}"?`)) {
       await eliminarJuego(game._id || game.id || game.gameId);
+      window.alert(`Juego "${game.title}" eliminado correctamente.`);
     }
   };
 
   const handleSubmit = async (data) => {
     if (gameToEdit) {
       await actualizarJuego(gameToEdit._id || gameToEdit.id || gameToEdit.gameId, data);
+      window.alert(`Juego "${data.title}" actualizado correctamente.`);
     } else {
       await agregarJuego(data);
+      window.alert(`Juego "${data.title}" creado correctamente.`);
     }
   };
 
